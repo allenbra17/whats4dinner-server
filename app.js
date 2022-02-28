@@ -7,7 +7,8 @@ app.use(require('./middleware/headers'));
 app.use(Express.json())
 
 const controllers = require("./controllers");
-app.use("/user", controllers.userController)
+app.use("/user", controllers.userController);
+app.use("/food", controllers.foodController);
 // app.use(require("./middleware/validateSession"))
 
 dbConnection.authenticate()
