@@ -9,6 +9,7 @@ app.use(Express.json())
 const controllers = require("./controllers");
 app.use("/user", controllers.userController);
 app.use("/food", controllers.foodController);
+app.use("/drinks", controllers.drinksController);
 // app.use(require("./middleware/validateSession"))
 
 dbConnection.authenticate()

@@ -1,5 +1,5 @@
 module.exports = {
     userController: require("./usercontroller"),
-    // drinksController: require("./drinkscontroller"),
+    drinksController: require("./drinkscontroller"),
     foodController: require("./foodcontroller")
 }
