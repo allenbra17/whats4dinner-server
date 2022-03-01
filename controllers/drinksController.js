@@ -18,7 +18,7 @@ router.get("/mine", async (req, res) => {
     try {
         const userCocktails = await DrinksModel.findAll({
             where: {
-                owner: id
+                userId: req.user.id
             }
         });
         res.status(200).json(userCocktails);
@@ -34,14 +34,14 @@ router.post("/create", async (req, res) => {
         cocktailURL,
         imgURL,
         } = req.body
-        const { id } = req.user
+
     try {
         const createDrinks = await DrinksModel.create({
             cocktailName,
             mainIngredient,
             cocktailURL,
             imgURL,
-            userID: id
+            userId: req.user.id
         })
 
         res.status(201).json({
@@ -55,12 +55,11 @@ router.post("/create", async (req, res) => {
     }
 })
 
-router.get("/userID", async (req, res) => {
-    const { id } = req.user
+router.get("/userId", async (req, res) => {
     try {
         const myCocktails = await DrinksModel.findAll({
             where: {
-                userID: id
+                userId: req.user.id
             }
         })
         res.status(200).json(myCocktails)

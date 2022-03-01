@@ -18,10 +18,6 @@ const DrinksModel = db.define("drinks", {
         type: DataTypes.STRING(1000),
         allowNull: false
     },
-    userID: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-    }
 })
 
 module.exports = DrinksModel
