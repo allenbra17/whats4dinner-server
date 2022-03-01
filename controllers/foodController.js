@@ -18,7 +18,7 @@ router.get("/mine", async (req, res) => {
     try {
         const userRecipes = await FoodModel.findAll({
             where: {
-                owner: id
+                userId: req.user.id
             }
         });
         res.status(200).json(userRecipes);
@@ -34,14 +34,13 @@ router.post("/create", async (req, res) => {
         recipeURL,
         imgURL,
         } = req.body
-        const { id } = req.user
     try {
         const createFood = await FoodModel.create({
             recipeName,
             mainIngredient,
             recipeURL,
             imgURL,
-            userID: id
+            userId: req.user.id
         })
 
         res.status(201).json({
@@ -55,12 +54,12 @@ router.post("/create", async (req, res) => {
     }
 })
 
-router.get("/userID", async (req, res) => {
+router.get("/userId", async (req, res) => {
     const { id } = req.user
     try {
         const myRecipes = await FoodModel.findAll({
             where: {
-                userID: id
+                userId: id
             }
         })
         res.status(200).json(myRecipes)
@@ -98,7 +97,8 @@ router.put("/:id", async (req, res) => {
 })
 
 router.delete("/:id", async (req, res) => {
-
+    const userId = req.user
+    if(userId.role === "admin" || userId === req.user.id){
     try {
         await FoodModel.destroy({
             where: { id: req.params.id }
@@ -112,6 +112,8 @@ router.delete("/:id", async (req, res) => {
         res.status(500).json({
             message: `Failed to delete Recipe ${err}`
         })
+    }} else {
+        res.send({ error: "You have no privileges to perform this action." })
     }
 })
 

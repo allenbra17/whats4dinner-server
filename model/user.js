@@ -19,7 +19,11 @@ const UserModel = db.define("user", {
     password: {
         type: DataTypes.STRING(1000),
         allowNull: false
-    }
+    },
+    role: {
+        type: DataTypes.STRING(1000),
+        allowNull: false 
+    } 
 })
 
 module.exports = UserModel;
