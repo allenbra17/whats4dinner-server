@@ -1,7 +1,7 @@
 {
-  "name": "efaserver",
+  "name": "w4d-server",
   "version": "1.0.0",
-  "description": "efa-server",
+  "description": "w4d-server",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
