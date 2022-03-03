@@ -4,7 +4,9 @@ const { FoodModel } = require("../model")
 
 
 
-router.get("/get", async (req, res) => {
+router.get("/all", async (req, res) => {
+    const userId = req.user
+    if(userId.role === "admin" || userId === req.user.id)
     try{
         const allFood = await FoodModel.findAll()
         res.status(200).json(allFood)
@@ -12,13 +14,15 @@ router.get("/get", async (req, res) => {
         res.status(500).json({
             error:err
         })
+    }else {
+        res.send({ error: "You have no privileges to perform this action." })
     }
 })
 router.get("/mine", async (req, res) => {
     try {
         const userRecipes = await FoodModel.findAll({
             where: {
-                userId: req.user.id
+                userId: req.body.user.id
             }
         });
         res.status(200).json(userRecipes);
@@ -54,17 +58,20 @@ router.post("/create", async (req, res) => {
     }
 })
 
-router.get("/userId", async (req, res) => {
-    const { id } = req.user
+router.get("/:userId", async (req, res) => {
+    const userId = req.user
+    if(userId.role === "admin")
     try {
         const myRecipes = await FoodModel.findAll({
             where: {
-                userId: id
+                userId: req.params.userId
             }
         })
         res.status(200).json(myRecipes)
     } catch (err) {
         res.status(500).json({ error: err })
+    }else {
+        res.send({ error: "You have no privileges to perform this action." })
     }
 })
 
