@@ -18,6 +18,10 @@ const FoodModel = db.define("food", {
         type: DataTypes.STRING(1000),
         allowNull: false
     },
+    rating:  {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    }
 })
 
 module.exports = FoodModel

@@ -37,6 +37,7 @@ router.post("/create", async (req, res) => {
         mainIngredient,
         cocktailURL,
         imgURL,
+        rating
         } = req.body
 
     try {
@@ -45,6 +46,7 @@ router.post("/create", async (req, res) => {
             mainIngredient,
             cocktailURL,
             imgURL,
+            rating,
             userId: req.user.id
         })
 
@@ -76,29 +78,21 @@ router.get("/:userId", async (req, res) => {
 }})
 
 router.put("/:id", async (req, res) => {
-    const {
-        cocktailName,
-        mainIngredient,
-        cocktailURL,
-        imgURL,
-        } = req.body
+    const { rating } = req.body
     try {
         await DrinksModel.update(
-            { cocktailName,
-                mainIngredient,
-                cocktailURL,
-                imgURL }, 
+            { rating }, 
             { where: { id: req.params.id }, returning: true }
         )
         .then((result) => {
             res.status(200).json({
-                message: "cocktail successfully updated",
+                message: "Rating successfully updated",
                 updatedDrinks: result
             })
         })
     } catch(err) {
         res.status(500).json({
-            message: `Failed to update cocktail ${err}`
+            message: `Failed to update rating ${err}`
         })
     }
 })

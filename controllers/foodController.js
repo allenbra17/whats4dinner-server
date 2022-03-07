@@ -37,6 +37,7 @@ router.post("/create", async (req, res) => {
         mainIngredient,
         recipeURL,
         imgURL,
+        rating
         } = req.body
     try {
         const createFood = await FoodModel.create({
@@ -44,6 +45,7 @@ router.post("/create", async (req, res) => {
             mainIngredient,
             recipeURL,
             imgURL,
+            rating,
             userId: req.user.id
         })
 
@@ -76,29 +78,21 @@ router.get("/:userId", async (req, res) => {
 })
 
 router.put("/:id", async (req, res) => {
-    const {
-        recipeName,
-        mainIngredient,
-        recipeURL,
-        imgURL,
-        } = req.body
+    const { rating } = req.body
     try {
         await FoodModel.update(
-            { recipeName,
-                mainIngredient,
-                recipeURL,
-                imgURL }, 
+            { rating }, 
             { where: { id: req.params.id }, returning: true }
         )
         .then((result) => {
             res.status(200).json({
-                message: "Recipe successfully updated",
+                message: "Rating successfully updated",
                 updatedFood: result
             })
         })
     } catch(err) {
         res.status(500).json({
-            message: `Failed to update Recipe ${err}`
+            message: `Failed to update rating ${err}`
         })
     }
 })
