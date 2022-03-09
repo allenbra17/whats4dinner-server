@@ -6,7 +6,7 @@ const FoodModel = db.define("food", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    mainIngredient: {
+    category: {
         type: DataTypes.STRING,
         allowNull: false
     },

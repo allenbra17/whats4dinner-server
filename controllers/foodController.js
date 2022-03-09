@@ -34,7 +34,7 @@ router.get("/mine", async (req, res) => {
 router.post("/create", async (req, res) => {
     const {
         recipeName,
-        mainIngredient,
+        category,
         recipeURL,
         imgURL,
         rating
@@ -42,7 +42,7 @@ router.post("/create", async (req, res) => {
     try {
         const createFood = await FoodModel.create({
             recipeName,
-            mainIngredient,
+            category,
             recipeURL,
             imgURL,
             rating,
