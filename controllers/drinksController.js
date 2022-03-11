@@ -4,16 +4,6 @@ const { DrinksModel } = require("../model")
 
 
 
-router.get("/get", async (req, res) => {
-    try{
-        const allDrinks = await DrinksModel.findAll()
-        res.status(200).json(allDrinks)
-    } catch(err) {
-        res.status(500).json({
-            error:err
-        })
-    }
-})
 router.get("/mine", async (req, res) => {
     try {
         const userCocktails = await DrinksModel.findAll({
@@ -33,6 +23,7 @@ router.post("/create", async (req, res) => {
         mainIngredient,
         cocktailURL,
         imgURL,
+        rating
         } = req.body
 
     try {
@@ -41,6 +32,7 @@ router.post("/create", async (req, res) => {
             mainIngredient,
             cocktailURL,
             imgURL,
+            rating,
             userId: req.user.id
         })
 
@@ -55,43 +47,38 @@ router.post("/create", async (req, res) => {
     }
 })
 
-router.get("/userId", async (req, res) => {
+router.get("/:userId", async (req, res) => {
+    const userId = req.user
+    if(userId.role === "admin")
     try {
         const myCocktails = await DrinksModel.findAll({
             where: {
-                userId: req.user.id
+                userId: req.params.userId
             }
         })
         res.status(200).json(myCocktails)
     } catch (err) {
         res.status(500).json({ error: err })
-    }
-})
+    }else {
+        res.send({ error: "You have no privileges to perform this action." })
+}})
 
 router.put("/:id", async (req, res) => {
-    const {
-        cocktailName,
-        mainIngredient,
-        cocktailURL,
-        imgURL,
-        } = req.body
+    const { rating } = req.body
     try {
         await DrinksModel.update(
-            { cocktailName,
-                mainIngredient,
-                cocktailURL,
-                imgURL }, 
+            { rating }, 
             { where: { id: req.params.id }, returning: true }
         )
         .then((result) => {
             res.status(200).json({
-                message: "cocktail successfully updated",
+                message: "Rating successfully updated",
                 updatedDrinks: result
             })
         })
     } catch(err) {
         res.status(500).json({
-            message: `Failed to update cocktail ${err}`
+            message: `Failed to update rating ${err}`
         })
     }
 })
