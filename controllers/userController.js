@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
             role: ('user')
         });
 
-        let token = jwt.sign({ id: user.id }, process.env.JWT_KEY, { expiresIn: 60 * 60 * 24 })
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 12 })
         res.status(201).json({
             message: "User successfully registered",
             user: "user", user,
@@ -49,7 +49,7 @@ router.post("/login", async (req, res) => {
             let passwordComparison = await bcrypt.compare(password, loginUser.password);
 
             if (passwordComparison) {
-                let token = jwt.sign({ id: loginUser.id }, process.env.JWT_KEY, { expiresIn: 60 * 60 * 24 })
+                let token = jwt.sign({ id: loginUser.id }, process.env.JWT_SECRET, { expiresIn: 60 * 60 * 24 })
                 res.status(200).json({
                     user: loginUser,
                     message: "Login successful",
