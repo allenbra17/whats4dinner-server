@@ -2,27 +2,11 @@ const Express = require('express');
 const router = Express.Router();
 const { FoodModel } = require("../model")
 
-
-
-router.get("/all", async (req, res) => {
-    const userId = req.user
-    if(userId.role === "admin" || userId === req.user.id)
-    try{
-        const allFood = await FoodModel.findAll()
-        res.status(200).json(allFood)
-    } catch(err) {
-        res.status(500).json({
-            error:err
-        })
-    }else {
-        res.send({ error: "You have no privileges to perform this action." })
-    }
-})
 router.get("/mine", async (req, res) => {
     try {
         const userRecipes = await FoodModel.findAll({
             where: {
-                userId: req.body.user.id
+                userId: req.user.id
             }
         });
         res.status(200).json(userRecipes);
