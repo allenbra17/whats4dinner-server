@@ -1,6 +1,6 @@
 module.exports = {
-    userController: require("./usercontroller"),
-    drinksController: require("./drinkscontroller"),
-    foodController: require("./foodcontroller"),
-    adminController: require("./admincontroller")
+    userController: require("./userController"),
+    drinksController: require("./drinksController"),
+    foodController: require("./foodController"),
+    adminController: require("./adminController")
 }
