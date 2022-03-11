@@ -2,18 +2,6 @@ const Express = require('express');
 const router = Express.Router();
 const { FoodModel } = require("../model")
 
-
-
-router.get("/get", async (req, res) => {
-    try{
-        const allFood = await FoodModel.findAll()
-        res.status(200).json(allFood)
-    } catch(err) {
-        res.status(500).json({
-            error:err
-        })
-    }
-})
 router.get("/mine", async (req, res) => {
     try {
         const userRecipes = await FoodModel.findAll({
@@ -30,16 +18,18 @@ router.get("/mine", async (req, res) => {
 router.post("/create", async (req, res) => {
     const {
         recipeName,
-        mainIngredient,
+        category,
         recipeURL,
         imgURL,
+        rating
         } = req.body
     try {
         const createFood = await FoodModel.create({
             recipeName,
-            mainIngredient,
+            category,
             recipeURL,
             imgURL,
+            rating,
             userId: req.user.id
         })
 
@@ -54,44 +44,39 @@ router.post("/create", async (req, res) => {
     }
 })
 
-router.get("/userId", async (req, res) => {
-    const { id } = req.user
+router.get("/:userId", async (req, res) => {
+    const userId = req.user
+    if(userId.role === "admin")
     try {
         const myRecipes = await FoodModel.findAll({
             where: {
-                userId: id
+                userId: req.params.userId
             }
         })
         res.status(200).json(myRecipes)
     } catch (err) {
         res.status(500).json({ error: err })
+    }else {
+        res.send({ error: "You have no privileges to perform this action." })
     }
 })
 
 router.put("/:id", async (req, res) => {
-    const {
-        recipeName,
-        mainIngredient,
-        recipeURL,
-        imgURL,
-        } = req.body
+    const { rating } = req.body
     try {
         await FoodModel.update(
-            { recipeName,
-                mainIngredient,
-                recipeURL,
-                imgURL }, 
+            { rating }, 
             { where: { id: req.params.id }, returning: true }
         )
         .then((result) => {
             res.status(200).json({
-                message: "Recipe successfully updated",
+                message: "Rating successfully updated",
                 updatedFood: result
             })
         })
     } catch(err) {
         res.status(500).json({
-            message: `Failed to update Recipe ${err}`
+            message: `Failed to update rating ${err}`
         })
     }
 })
