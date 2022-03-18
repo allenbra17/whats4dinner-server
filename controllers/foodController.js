@@ -85,9 +85,12 @@ router.delete("/:id", async (req, res) => {
     const userId = req.user
     if(userId.role === "admin" || userId === req.user.id){
     try {
-        await FoodModel.destroy({
-            where: { id: req.params.id }
-        })
+        const query = {
+            where: {
+                id: req.params.id
+            }
+        };
+        await FoodModel.destroy(query)
         
         res.status(200).json({
             message: "Recipe deleted",

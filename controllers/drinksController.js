@@ -87,9 +87,12 @@ router.delete("/:id", async (req, res) => {
     const userId = req.user
     if(userId.role === "admin" || userId === req.user.id){
     try {
-        await DrinksModel.destroy({
-            where: { id: req.params.id }
-        })
+        const query = {
+            where: {
+                id: req.params.id
+            }
+        };
+        await DrinksModel.destroy(query)
         
         res.status(200).json({
             message: "Cocktail deleted",
