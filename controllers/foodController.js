@@ -82,8 +82,7 @@ router.put("/:id", async (req, res) => {
 })
 
 router.delete("/:id", async (req, res) => {
-    const userId = req.user
-    if(userId.role === "admin" || userId === req.user.id){
+
     try {
         const query = {
             where: {
@@ -100,8 +99,6 @@ router.delete("/:id", async (req, res) => {
         res.status(500).json({
             message: `Failed to delete Recipe ${err}`
         })
-    }} else {
-        res.send({ error: "You have no privileges to perform this action." })
     }
 })
 
